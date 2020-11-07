@@ -1,12 +1,13 @@
 {
   "name": "iot-device-registry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
     "start": "npm run build:live",
     "build": "tsc -p .",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
+    "lint": "tslint src/**/*.ts",
     "cover:report": "nyc report --reporter=lcov --reporter=html",
     "test:db": "nyc --silent --no-clean mocha -r ts-node/register test/db/mongodb.spec.ts",
     "test:deviceservice": "nyc --silent --no-clean mocha -r ts-node/register test/services/deviceService.spec.ts",

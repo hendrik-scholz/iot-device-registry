@@ -71,7 +71,7 @@ function getDevices(): Promise<Device[]> {
 
 function getDeviceForUuid(uuid: string): Promise<Device> {
   const pipeline: any[] = [];
-  pipeline.push({ $match: { uuid: uuid } });
+  pipeline.push({ $match: { uuid } });
   pipeline.push({
     $project: {
       _id: 0,
@@ -100,7 +100,7 @@ function getDeviceForUuid(uuid: string): Promise<Device> {
 
 // https://docs.mongodb.com/manual/reference/operator/aggregation/geoNear/
 function getDevicesInGeofence(geofence: Geofence): Promise<Device[]> {
-  console.log(`Geofence: ${JSON.stringify(geofence)}`);
+  logger.info(`Geofence: ${JSON.stringify(geofence)}`);
 
   const pipeline: any[] = [];
   pipeline.push({
