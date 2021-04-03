@@ -1,17 +1,13 @@
 import { Device } from '../types/device';
-import { saveDevice } from '../db/mongodb';
-import { isValidDevice } from '../services/validationService';
+import { EventEmitter } from 'events';
+import { DeviceService } from './deviceService';
 
-function registerDevice(device: Device) {
-  return new Promise((resolve, reject) => {
-    if (isValidDevice(device)) {
-      saveDevice(device)
-        .then(() => resolve())
-        .catch(() => reject());
-    } else {
-      reject('Invalid device');
-    }
-  });
+export class RegistrationService {
+  private readonly eventName = 'registration';
+
+  constructor(eventEmitter: EventEmitter, deviceService: DeviceService) {
+    eventEmitter.on(this.eventName, (device: Device) => {
+      deviceService.saveDevice(device);
+    });
+  }
 }
-
-export { registerDevice };

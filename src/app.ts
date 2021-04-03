@@ -1,30 +1,21 @@
-import { registerEventEmitter } from './subscribers/registration';
-import { EventEmitter } from 'events';
-import { subscribeToRegisterTopic } from './api/mqtt';
-
-import {
-  connectToMongoDbForConnectionString,
-  disconnectFromMongoDb,
-} from './db/mongodb';
-import { Device } from './types/device';
-import { registerDevice } from './services/registrationService';
-import { startService } from './api/http';
+import { DataAccess } from "./plugins/dataAccess/dataAccess";
+import { DeviceService } from "./services/deviceService";
+import { Log4JsLogService } from "./plugins/logger/log4js/log4jsLogger";
+import { LogService } from "./plugins/logger/logService";
+import { MongoDbDataAccess } from "./plugins/dataAccess/mongoDb/mongodbDataAccess";
+import { HttpApi } from "./api/http";
+import { Mqtt } from "./api/mqtt";
+import { EventEmitter } from "events";
+import { RegistrationService } from "./services/registrationService";
 
 const eventEmitter = new EventEmitter();
 
-connectToMongoDbForConnectionString('mongodb://127.0.0.1:27017/test');
+const dataAccess: DataAccess = new MongoDbDataAccess(
+  "mongodb://127.0.0.1:27017/test"
+);
+const logService: LogService = new Log4JsLogService();
+const deviceService = new DeviceService(dataAccess, logService);
 
-registerEventEmitter(eventEmitter, (device: Device) => {
-  registerDevice(device);
-  // additional action on registration
-});
-
-subscribeToRegisterTopic(eventEmitter);
-
-startService();
-
-// https://nodejs.org/api/process.html
-// Listener functions must only perform synchronous operations.
-process.on('exit', async () => {
-  await disconnectFromMongoDb();
-});
+new HttpApi(deviceService, logService);
+new Mqtt(eventEmitter, logService);
+new RegistrationService(eventEmitter, deviceService);

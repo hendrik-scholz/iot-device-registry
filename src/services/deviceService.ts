@@ -1,21 +1,35 @@
-import {
-  getDevices,
-  getDeviceForUuid,
-  getDevicesInGeofence,
-} from '../db/mongodb';
+import { LogService } from '../plugins/logger/logService';
+import { DataAccess } from '../plugins/dataAccess/dataAccess';
 import { Device } from '../types/device';
 import { Geofence } from '../types/geofence';
 
-function getDevices_(): Promise<Device[]> {
-  return getDevices();
-}
+export class DeviceService {
+  private readonly dataAccess: DataAccess;
 
-function getDeviceForUuid_(uuid: string): Promise<Device> {
-  return getDeviceForUuid(uuid);
-}
+  private readonly logger: LogService;
 
-function getDevicesInGeofence_(geofence: Geofence): Promise<Device[]> {
-  return getDevicesInGeofence(geofence);
-}
+  constructor(dataAccess: DataAccess, logger: LogService) {
+    this.dataAccess = dataAccess;
+    this.logger = logger;
+  }
 
-export { getDevices_, getDeviceForUuid_, getDevicesInGeofence_ };
+  getDeviceForUuid(uuid: string): Promise<Device> {
+    this.logger.info('Getting device for UUID ...');
+    return this.dataAccess.getDeviceForUuid(uuid);
+  }
+
+  getDevices(): Promise<Device[]> {
+    this.logger.info('Getting devices ...');
+    return this.dataAccess.getDevices();
+  }
+
+  getDevicesForGeofence(geofence: Geofence): Promise<Device[]> {
+    this.logger.info('Getting devices for geofence ...');
+    return this.dataAccess.getDevicesForGeofence(geofence);
+  }
+
+  saveDevice(device: Device): Promise<void> {
+    this.logger.info('Saving device ...');
+    return this.dataAccess.saveDevice(device);
+  }
+}
