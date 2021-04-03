@@ -30,7 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - created JSON validator
 - created functions to write message to MongoDB
 
-[Unreleased]: https://github.com/hendrik-scholz/iot-device-registry/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/hendrik-scholz/iot-device-registry/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/hendrik-scholz/iot-device-registry/compare/1.0.1...2.0.0
 [1.0.1]: https://github.com/hendrik-scholz/iot-device-registry/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/hendrik-scholz/iot-device-registry/compare/0.9.1...1.0.0
 [0.9.1]: https://github.com/hendrik-scholz/iot-device-registry/compare/0.9.0...0.9.1
