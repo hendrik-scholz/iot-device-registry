@@ -6,6 +6,9 @@ import { Geofence } from "../../../types/geofence";
 import { DataAccess } from "../dataAccess";
 
 export class MongoDbDataAccess implements DataAccess {
+
+  private readonly dateTimeFormat = "%Y-%m-%dT%H:%M:%S.%LZ";
+
   constructor(connectionString: string) {
     mongoose
       .connect(connectionString, { useNewUrlParser: true })
@@ -30,7 +33,7 @@ export class MongoDbDataAccess implements DataAccess {
           $arrayElemAt: ["$geoposition.coordinates", 1],
         },
         identification: "$identification",
-        timestamp: { $dateToString: { date: "$timestamp" } },
+        timestamp: { $dateToString: { date: "$timestamp", format: this.dateTimeFormat } },
         uuid: "$uuid",
       },
     });
@@ -59,7 +62,7 @@ export class MongoDbDataAccess implements DataAccess {
           $arrayElemAt: ["$geoposition.coordinates", 1],
         },
         identification: "$identification",
-        timestamp: { $dateToString: { date: "$timestamp" } },
+        timestamp: { $dateToString: { date: "$timestamp", format: this.dateTimeFormat } },
         uuid: "$uuid",
       },
     });
@@ -77,6 +80,7 @@ export class MongoDbDataAccess implements DataAccess {
           coordinates: [geofence.longitude, geofence.latitude],
         },
         distanceField: "dist.calculated",
+        spherical: true,
         maxDistance: geofence.radiusInMeters,
       },
     });
@@ -92,7 +96,7 @@ export class MongoDbDataAccess implements DataAccess {
           $arrayElemAt: ["$geoposition.coordinates", 1],
         },
         identification: "$identification",
-        timestamp: { $dateToString: { date: "$timestamp" } },
+        timestamp: { $dateToString: { date: "$timestamp", format: this.dateTimeFormat } },
         uuid: "$uuid",
       },
     });
