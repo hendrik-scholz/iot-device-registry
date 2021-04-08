@@ -30,7 +30,10 @@ export class HttpApi {
           res.append('Access-Control-Allow-Origin', '*');
           res.json(devices);
         })
-        .catch((error) => res.sendStatus(500));
+        .catch((error) => {
+          logService.error(error);
+          res.sendStatus(500);
+        });
     });
 
     app.get('/devices/geofence', (req: Request, res: Response) => {
@@ -54,7 +57,10 @@ export class HttpApi {
         deviceService
           .getDevicesForGeofence(geofence)
           .then((devices) => res.json(devices))
-          .catch((error) => res.sendStatus(500));
+          .catch((error) => {
+            logService.error(error);
+            res.sendStatus(500);
+          });
       } else {
         logService.warn('Query params not set.');
         res.status(HttpStatus.BAD_REQUEST).send({ message: 'Bad Request.' });
@@ -68,7 +74,10 @@ export class HttpApi {
         deviceService
           .getDeviceForUuid(uuid)
           .then((device) => res.json(device))
-          .catch((error) => res.sendStatus(500));
+          .catch((error) => {
+            logService.error(error);
+            res.sendStatus(500);
+          });
       } else {
         logService.warn('Query params not set.');
         res.status(HttpStatus.BAD_REQUEST).send({ message: 'Bad Request.' });
