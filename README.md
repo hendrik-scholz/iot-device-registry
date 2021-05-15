@@ -1,8 +1,7 @@
 # iot-device-registry
 
 iot-device-information publishes a register message to an MQTT Broker on startup. iot-device-registry subscribes
-to a topic of that broker and saves the payload to the MongoDB. I am planning to create an API so that the data in the MongoDB
-can be retrieved for further processing.
+to a topic of that broker and saves the payload to the MongoDB. An API can be used to retrieve the data from the MongoDB.
 
 ## Requirements
 
